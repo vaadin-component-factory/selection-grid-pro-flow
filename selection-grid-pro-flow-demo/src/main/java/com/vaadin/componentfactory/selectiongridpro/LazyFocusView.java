@@ -21,7 +21,7 @@ public class LazyFocusView extends VerticalLayout
     public LazyFocusView()
     {
 
-        SelectionGrid<Person> grid = new SelectionGrid<>();
+        SelectionGridPro<Person> grid = new SelectionGridPro<>();
         grid.setDataProvider(personDataProvider);
 
         Grid.Column<Person> personColumn = grid.addColumn(Person::getFirstName).setHeader("First Name");

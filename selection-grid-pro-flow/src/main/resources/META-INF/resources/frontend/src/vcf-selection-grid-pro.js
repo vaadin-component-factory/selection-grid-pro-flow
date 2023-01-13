@@ -20,7 +20,7 @@
 
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin';
 import { ElementMixin } from '@vaadin/component-base/src/element-mixin';
-import { GridElement } from  '@vaadin/vaadin-grid/src/vaadin-grid.js';
+import { GridPro } from  '@vaadin/grid-pro/src/vaadin-grid-pro.js';
 
 import {
     _getItemOverriden,
@@ -28,7 +28,7 @@ import {
     _selectionGridSelectRowWithItem
 } from './helpers';
 
-class VcfSelectionGridElement extends ElementMixin(ThemableMixin(GridElement)) {
+class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
 
     constructor() {
         super();
@@ -141,7 +141,7 @@ class VcfSelectionGridElement extends ElementMixin(ThemableMixin(GridElement)) {
 
     static get is() {
         /** prefix with vaadin because grid column requires this **/
-        return 'vaadin-selection-grid';
+        return 'vaadin-selection-grid-pro';
     }
 
     static get version() {
@@ -149,9 +149,9 @@ class VcfSelectionGridElement extends ElementMixin(ThemableMixin(GridElement)) {
     }
 }
 
-customElements.define(VcfSelectionGridElement.is, VcfSelectionGridElement);
+customElements.define(VcfSelectionGridPro.is, VcfSelectionGridPro);
 
 /**
  * @namespace Vaadin
  */
-window.Vaadin.VcfSelectionGridElement = VcfSelectionGridElement;
+window.Vaadin.VcfSelectionGridPro = VcfSelectionGridPro;

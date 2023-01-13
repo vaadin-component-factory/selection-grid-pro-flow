@@ -20,7 +20,7 @@ public class FocusGridMultipleColGroupView extends VerticalLayout {
     public FocusGridMultipleColGroupView() {
 
         List<Person> personList = getItems();
-        SelectionGrid<Person> grid = new SelectionGrid<>();
+        SelectionGridPro<Person> grid = new SelectionGridPro<>();
         grid.setItems(personList);
 
         Grid.Column<Person> firstNameColumn = grid.addColumn(Person::getFirstName).setHeader("First Name").setKey("name");

@@ -3,6 +3,7 @@ package com.vaadin.componentfactory.selectiongridpro;
 import com.vaadin.componentfactory.selectiongridpro.bean.Person;
 import com.vaadin.componentfactory.selectiongridpro.service.PersonService;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 
@@ -19,7 +20,7 @@ public class SimpleView extends Div {
         Div messageDiv = new Div();
 
         List<Person> personList = getItems();
-        Grid<Person> grid = new SelectionGrid<>();
+        GridPro<Person> grid = new SelectionGridPro<>();
         grid.setItems(personList);
 
         grid.addColumn(Person::getFirstName).setHeader("First Name");

@@ -43,10 +43,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Tag("vaadin-selection-grid")
-@CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid")
-@JsModule("./src/vcf-selection-grid.js")
-@JsModule("./src/selection-grid.js")
+@Tag("vaadin-selection-grid-pro")
+@CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid-pro")
+@JsModule("./src/vcf-selection-grid-pro.js")
+@JsModule("./src/selection-grid-pro.js")
 public class SelectionTreeGrid<T> extends TreeGrid<T> {
 
     /**

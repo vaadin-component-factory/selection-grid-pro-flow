@@ -22,7 +22,7 @@ public class LazyDataView extends VerticalLayout
     {
         Div messageDiv = new Div();
 
-        Grid<Person> grid = new SelectionGrid<>();
+        Grid<Person> grid = new SelectionGridPro<>();
         grid.setDataProvider(personDataProvider);
 
         grid.addColumn(Person::getFirstName).setHeader("First Name");

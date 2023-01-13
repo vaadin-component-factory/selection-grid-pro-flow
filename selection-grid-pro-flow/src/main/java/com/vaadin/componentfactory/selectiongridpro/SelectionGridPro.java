@@ -1,5 +1,13 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /*
  * #%L
  * selection-grid-flow
@@ -28,27 +36,20 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridMultiSelectionModel;
 import com.vaadin.flow.component.grid.GridSelectionModel;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.data.provider.DataCommunicator;
 import com.vaadin.flow.data.selection.SelectionModel;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-@Tag("vaadin-selection-grid")
-@CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid")
-@JsModule("./src/vcf-selection-grid.js")
-@JsModule("./src/selection-grid.js")
-public class SelectionGrid<T> extends Grid<T> {
+@Tag("vaadin-selection-grid-pro")
+@CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid-pro")
+@JsModule("./src/vcf-selection-grid-pro.js")
+@JsModule("./src/selection-grid-pro.js")
+public class SelectionGridPro<T> extends GridPro<T> {
 
     /**
      * @see Grid#Grid()
      */
-    public SelectionGrid() {
+    public SelectionGridPro() {
         super();
     }
 
@@ -56,24 +57,15 @@ public class SelectionGrid<T> extends Grid<T> {
      * @param pageSize - the page size. Must be greater than zero.
      * @see Grid#Grid(int)
      */
-    public SelectionGrid(int pageSize) {
+    public SelectionGridPro(int pageSize) {
         super(pageSize);
-    }
-
-    /**
-     * @param beanType          - the bean type to use, not null
-     * @param autoCreateColumns – when true, columns are created automatically for the properties of the beanType
-     * @see Grid#Grid(Class, boolean)
-     */
-    public SelectionGrid(Class<T> beanType, boolean autoCreateColumns) {
-        super(beanType, autoCreateColumns);
     }
 
     /**
      * @param beanType - the bean type to use, not null
      * @see Grid#Grid(Class)
      */
-    public SelectionGrid(Class<T> beanType) {
+    public SelectionGridPro(Class<T> beanType) {
         super(beanType);
     }
 

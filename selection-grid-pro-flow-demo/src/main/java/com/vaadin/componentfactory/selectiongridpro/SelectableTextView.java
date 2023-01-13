@@ -24,7 +24,7 @@ public class SelectableTextView extends Div {
         Div messageDiv = new Div();
 
         List<Person> personList = getItems();
-        SelectionGrid<Person> grid = new SelectionGrid<>();
+        SelectionGridPro<Person> grid = new SelectionGridPro<>();
 
         grid.addThemeVariants(SelectionGridVariant.SELECTABLE_TEXT);
 

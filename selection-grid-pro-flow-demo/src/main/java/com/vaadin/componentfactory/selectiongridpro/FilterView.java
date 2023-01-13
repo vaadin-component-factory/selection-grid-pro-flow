@@ -18,7 +18,7 @@ import java.util.List;
 public class FilterView extends Div {
 
     private TextField filterText = new TextField("Filter");
-    private Grid<Person> grid = new SelectionGrid<>();
+    private Grid<Person> grid = new SelectionGridPro<>();
     private List<Person> personList = getItems();
     private ListDataProvider<Person> dataProvider;
 

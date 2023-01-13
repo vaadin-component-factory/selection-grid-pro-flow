@@ -1,12 +1,13 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
+import java.util.List;
+
 import com.vaadin.componentfactory.selectiongridpro.bean.Person;
 import com.vaadin.componentfactory.selectiongridpro.service.PersonService;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
-
-import java.util.List;
 
 /**
  * Basic example with setItems and beanType in the constructor
@@ -19,7 +20,7 @@ public class BeanGridView extends Div {
         Div messageDiv = new Div();
 
         List<Person> personList = getItems();
-        Grid<Person> grid = new SelectionGrid<>(Person.class);
+        GridPro<Person> grid = new SelectionGridPro<>(Person.class);
         grid.setItems(personList);
 
         grid.setSelectionMode(Grid.SelectionMode.MULTI);

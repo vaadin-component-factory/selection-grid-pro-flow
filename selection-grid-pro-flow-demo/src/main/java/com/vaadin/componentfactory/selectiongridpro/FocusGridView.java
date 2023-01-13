@@ -19,7 +19,7 @@ public class FocusGridView extends VerticalLayout {
     public FocusGridView() {
 
         List<Person> personList = getItems();
-        SelectionGrid<Person> grid = new SelectionGrid<>();
+        SelectionGridPro<Person> grid = new SelectionGridPro<>();
         grid.setItems(personList);
 
         Grid.Column<Person> personColumn = grid.addColumn(Person::getFirstName).setHeader("First Name").setKey("name");
