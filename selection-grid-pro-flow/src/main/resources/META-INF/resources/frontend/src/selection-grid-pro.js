@@ -74,6 +74,14 @@ customElements.whenDefined("vaadin-selection-grid-pro").then(() => {
 			} else {
 				this.old_enterEditFromEvent(e, type)
 			}
-		}		        
+		}
+		
+		Grid.prototype.old_onKeyUp = Grid.prototype._onKeyUp;
+		Grid.prototype._onKeyUp = function _onKeyUp(e) {
+			const multiselectable = this.$.table.getAttribute('aria-multiselectable') === 'true'
+			if(!multiselectable) {
+				this.old_onKeyUp(e);
+			}
+		}         
     }
 });
