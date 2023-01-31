@@ -3,6 +3,7 @@ package com.vaadin.componentfactory.selectiongridpro;
 import com.vaadin.componentfactory.selectiongridpro.bean.Person;
 import com.vaadin.componentfactory.selectiongridpro.service.PersonService;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.AbstractBackEndDataProvider;
@@ -22,12 +23,14 @@ public class LazyDataView extends VerticalLayout
     {
         Div messageDiv = new Div();
 
-        Grid<Person> grid = new SelectionGridPro<>();
+        GridPro<Person> grid = new SelectionGridPro<>();
         grid.setDataProvider(personDataProvider);
 
-        grid.addColumn(Person::getFirstName).setHeader("First Name");
+        grid.addEditColumn(Person::getFirstName).text(Person::setFirstName).setHeader("First Name");
+        grid.addEditColumn(Person::getLastName).text(Person::setLastName).setHeader("Last Name");
         grid.addColumn(Person::getAge).setHeader("Age");
-
+        grid.addEditColumn(Person::isSubscriber).checkbox(Person::setSubscriber)
+        .setHeader("Subscriber");
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
 
         grid.asMultiSelect().addValueChangeListener(event -> {

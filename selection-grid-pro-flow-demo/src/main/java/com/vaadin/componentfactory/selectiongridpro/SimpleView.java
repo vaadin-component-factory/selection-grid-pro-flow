@@ -1,5 +1,7 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
+import java.util.List;
+
 import com.vaadin.componentfactory.selectiongridpro.bean.Person;
 import com.vaadin.componentfactory.selectiongridpro.service.PersonService;
 import com.vaadin.flow.component.grid.Grid;
@@ -7,14 +9,11 @@ import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.Route;
 
-import java.util.List;
-
 /**
  * Basic example with setItems
  */
 @Route(value = "", layout = MainLayout.class)
 public class SimpleView extends Div {
-
 
     public SimpleView() {
         Div messageDiv = new Div();
@@ -23,8 +22,11 @@ public class SimpleView extends Div {
         GridPro<Person> grid = new SelectionGridPro<>();
         grid.setItems(personList);
 
-        grid.addColumn(Person::getFirstName).setHeader("First Name");
+        grid.addEditColumn(Person::getFirstName).text(Person::setFirstName).setHeader("First Name");
+        grid.addEditColumn(Person::getLastName).text(Person::setLastName).setHeader("Last Name");
         grid.addColumn(Person::getAge).setHeader("Age");
+        grid.addEditColumn(Person::isSubscriber).checkbox(Person::setSubscriber)
+        .setHeader("Subscriber");
 
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
 
