@@ -24,7 +24,6 @@ customElements.whenDefined("vaadin-selection-grid-pro").then(() => {
         Grid.prototype._onClick = function _click(e) {
             const boundOldClickHandler = oldClickHandler.bind(this);
             boundOldClickHandler(e);
-
             this._selectionGridSelectRow(e);
         };
         Grid.prototype.old_onNavigationKeyDown = Grid.prototype._onNavigationKeyDown;
@@ -67,5 +66,14 @@ customElements.whenDefined("vaadin-selection-grid-pro").then(() => {
                 }
             }
         }
+        
+        Grid.prototype.old_enterEditFromEvent = Grid.prototype._enterEditFromEvent;
+        Grid.prototype._enterEditFromEvent = function _enterEditFromEvent(e, type) {
+			if(e.keyCode == 32 && e.type == 'keydown') {
+				return;
+			} else {
+				this.old_enterEditFromEvent(e, type)
+			}
+		}		        
     }
 });
