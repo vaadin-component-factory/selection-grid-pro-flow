@@ -19,22 +19,16 @@
  */
 /* eslint-disable no-invalid-this */
 
-export function _selectionGridSelectRow(e) {
-    const vaadinTreeToggle = e.composedPath().find((p) => p.nodeName === "VAADIN-GRID-TREE-TOGGLE");
-    if (vaadinTreeToggle) {
-        // don't select, it will expand/collapse the node
-        // reset the last item
-        this.rangeSelectRowFrom = -1;
-    } else {
-        const tr = e.composedPath().find((p) => p.nodeName === "TR");
-        if (tr && typeof tr.index != 'undefined') {
-            const item = tr._item;
-            const index = tr.index;
+export function _selectionGridSelectRow(e) {   
+    const tr = e.composedPath().find((p) => p.nodeName === "TR");
+    if (tr && typeof tr.index != 'undefined') {
+        const item = tr._item;
+        const index = tr.index;
 
-            this._selectionGridSelectRowWithItem(e, item, index);
-        }
-    }
+        this._selectionGridSelectRowWithItem(e, item, index);
+    }    
 }
+
 export function _selectionGridSelectRowWithItem(e, item, index) {
     const ctrlKey = (e.metaKey)?e.metaKey:e.ctrlKey; //(this._ios)?e.metaKey:e.ctrlKey;
     // if click select only this row
