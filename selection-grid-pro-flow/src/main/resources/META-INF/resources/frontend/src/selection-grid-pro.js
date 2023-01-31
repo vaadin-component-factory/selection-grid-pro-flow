@@ -1,8 +1,8 @@
 /*-
  * #%L
- * Selection Grid
+ * Selection Grid Pro
  * %%
- * Copyright (C) 2020 Vaadin Ltd
+ * Copyright (C) 2023 Vaadin Ltd
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
