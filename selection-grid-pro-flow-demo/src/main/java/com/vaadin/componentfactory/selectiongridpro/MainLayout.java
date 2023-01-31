@@ -9,9 +9,9 @@ public class MainLayout extends AppLayout {
 
     public MainLayout() {
         final DrawerToggle drawerToggle = new DrawerToggle();
-        final RouterLink simple = new RouterLink("Selection Grid", SimpleView.class);
-        final RouterLink beanGrid = new RouterLink("Selection Grid with a bean class", BeanGridView.class);
-        final RouterLink lazy = new RouterLink("Lazy Grid view", LazyDataView.class);
+        final RouterLink simple = new RouterLink("Selection Grid Pro", SimpleView.class);
+        final RouterLink beanGrid = new RouterLink("Selection Grid Pro with a bean class", BeanGridView.class);
+        final RouterLink lazy = new RouterLink("Lazy Grid Pro view", LazyDataView.class);
         final VerticalLayout menuLayout = new VerticalLayout(simple, beanGrid, lazy);
         addToDrawer(menuLayout);
         addToNavbar(drawerToggle);
