@@ -32,8 +32,6 @@ hs_err_pid*
 /.classpath
 /.project
 /.settings
-/frontend/generated
-/frontend/index.html
 node
 node_modules
 package-lock.json
