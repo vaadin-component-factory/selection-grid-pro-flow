@@ -84,7 +84,8 @@
                 <version>2.0.0</version>
                 <!--  Use `mvn license:update-file-header` to fix header problems -->
                 <configuration>
-                    <licenseName>apache_v2</licenseName>
+                    <licenseName>vcl-1</licenseName>
+                    <licenseResolver>${project.baseUri}/src/license</licenseResolver>
                     <includes>
                         <include>**/main/**/*.java</include>
                         <include>**/main/**/*.js</include>
