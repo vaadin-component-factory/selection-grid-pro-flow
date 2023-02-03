@@ -104,7 +104,7 @@
         </dependency>
 
        <dependency>
-           <groupId>com.vaadin.componentfactory</groupId>
+           <groupId>org.vaadin.addons.componentfactory</groupId>
            <artifactId>selection-grid-pro-flow</artifactId>
            <version>${project.version}</version>
        </dependency>
