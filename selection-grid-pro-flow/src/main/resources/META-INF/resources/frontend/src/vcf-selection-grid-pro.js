@@ -18,7 +18,8 @@ import { GridPro } from  '@vaadin/grid-pro/src/vaadin-grid-pro.js';
 import {
     _getItemOverriden,
     _selectionGridSelectRow,
-    _selectionGridSelectRowWithItem
+    _selectionGridSelectRowWithItem,
+    _selectionGridRightClickSelectRow
 } from './helpers';
 
 class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
@@ -28,6 +29,7 @@ class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
         this._getItemOverriden = _getItemOverriden.bind(this);
         this._selectionGridSelectRow = _selectionGridSelectRow.bind(this);
         this._selectionGridSelectRowWithItem = _selectionGridSelectRowWithItem.bind(this);
+        this._selectionGridRightClickSelectRow = _selectionGridRightClickSelectRow.bind(this);
     }
 
     static get properties() {
@@ -35,6 +37,10 @@ class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
             rangeSelectRowFrom: {
                 type: Number,
                 value: -1
+            },
+            rightClickEnabled: {
+                type: Boolean,
+                value: false
             }
         };
     }
@@ -42,11 +48,18 @@ class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
     ready() {
         super.ready();
         this._getItem = this._getItemOverriden;
+        this.$.scroller.addEventListener('contextmenu', this._onRightClick.bind(this));
     }
 
     connectedCallback() {
         super.connectedCallback();
+    }
 
+    _onRightClick(e) {
+        if(this.rightClickEnabled){
+            e.preventDefault();
+            this._selectionGridRightClickSelectRow(e);
+        }
     }
 
     focusOnCell(rowNumber, cellNumber, nbOfCalls = 1) {
