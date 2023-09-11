@@ -77,6 +77,22 @@ export function _selectionGridSelectRowWithItem(e, item, index) {
     }
 }
 
+export function _selectionGridRightClickSelectRow(e) {
+    const tr = e.composedPath().find((p) => p.nodeName === "TR");
+    if (tr && typeof tr.index != 'undefined') {
+        const item = tr._item;
+        const index = tr.index;
+
+        if (this.$server) {
+            if (this.selectedItems && this.selectedItems.some((i) => i.key === item.key)) {
+                // keep all selected
+                return;
+            } else {
+                this.$server.selectRangeOnly(index, index);
+            }
+        }
+    }
+}
 
 export function _getItemOverriden(index, el) {
     if (index >= this._effectiveSize) {

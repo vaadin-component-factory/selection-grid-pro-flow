@@ -226,4 +226,19 @@ public class SelectionGridPro<T> extends GridPro<T> {
         getThemeNames().removeAll(Stream.of(variants)
                 .map(SelectionGridVariant::getVariantName).collect(Collectors.toList()));
     }
+    
+    /**
+     * Sets whether right click selection for rows is enabled or not.
+     * <ul>
+     * <li>if no rows selected, then right click on a row -> select the target row </li>
+     * <li>if already few rows selected, then right click on unselected row -> unselect already selected and select target row </li>
+	 * <li>if already few rows selected, then right click on selected row -> keep all selected </li>
+	 * </ul>
+     * 
+     * @param enabled true to enable right click selection
+     */
+    public void setRightClickSelection(boolean enabled) {
+    	this.getElement().setProperty("rightClickEnabled", enabled);
+    }
+    
 }
