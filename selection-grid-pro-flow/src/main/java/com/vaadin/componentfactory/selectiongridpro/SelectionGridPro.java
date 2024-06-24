@@ -148,15 +148,12 @@ public class SelectionGridPro<T> extends GridPro<T> {
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
             DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
-            Method fetchFromProvider;
-            try {
-                fetchFromProvider = DataCommunicator.class.getDeclaredMethod("fetchFromProvider", int.class, int.class);
-                fetchFromProvider.setAccessible(true);
-                asMultiSelect().select(((Stream<T>) fetchFromProvider.invoke(dataCommunicator, Math.min(fromIndex, toIndex), Math.max(fromIndex,
-                        toIndex) - Math.min(fromIndex, toIndex) + 1)).collect(Collectors.toList()));
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            Set<T> newSelectedItems = new HashSet<>();
+            for(int i = Math.min(fromIndex, toIndex); i < (Math.max(fromIndex,
+                    toIndex) + 1); i++) {
+            	newSelectedItems.add(dataCommunicator.getItem(i));
             }
+            asMultiSelect().select(newSelectedItems);
         }
     }
 
@@ -173,17 +170,13 @@ public class SelectionGridPro<T> extends GridPro<T> {
             int from = Math.min(fromIndex, toIndex);
             int to = Math.max(fromIndex, toIndex);
             DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
-            Method fetchFromProvider;
-            try {
-                fetchFromProvider = DataCommunicator.class.getDeclaredMethod("fetchFromProvider", int.class, int.class);
-                fetchFromProvider.setAccessible(true);
-                Set<T> newSelectedItems = ((Stream<T>) fetchFromProvider.invoke(dataCommunicator, from, to - from + 1)).collect(Collectors.toSet());
-                HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
-                oldSelectedItems.removeAll(newSelectedItems);
-                asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
-            } catch (Exception ignored) {
-                ignored.printStackTrace();
+            Set<T> newSelectedItems = new HashSet<>();
+            for(int i = from; i < (to +1); i++) {
+            	newSelectedItems.add(dataCommunicator.getItem(i));
             }
+            HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
+            oldSelectedItems.removeAll(newSelectedItems);
+            asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
         }
     }
 
