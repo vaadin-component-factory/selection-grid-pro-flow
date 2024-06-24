@@ -42,5 +42,6 @@ vite.generated.ts
 tsconfig.json
 vite.config.ts
 types.d.ts
+bundles
 
 selection-grid-flow/src/main/resources/rebel.xml
