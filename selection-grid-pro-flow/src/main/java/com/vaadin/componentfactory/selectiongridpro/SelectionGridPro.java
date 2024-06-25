@@ -149,8 +149,9 @@ public class SelectionGridPro<T> extends GridPro<T> {
         if (model instanceof GridMultiSelectionModel) {
             DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
             Set<T> newSelectedItems = new HashSet<>();
-            for(int i = Math.min(fromIndex, toIndex); i < (Math.max(fromIndex,
-                    toIndex) + 1); i++) {
+            int from = Math.min(fromIndex, toIndex);
+            int to = Math.max(fromIndex, toIndex) + 1;
+            for(int i = from; i < to; i++) {
             	newSelectedItems.add(dataCommunicator.getItem(i));
             }
             asMultiSelect().select(newSelectedItems);
