@@ -147,16 +147,34 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private void selectRange(int fromIndex, int toIndex) {
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
-            DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
-            Set<T> newSelectedItems = new HashSet<>();
-            int from = Math.min(fromIndex, toIndex);
-            int to = Math.max(fromIndex, toIndex) + 1;
-            for(int i = from; i < to; i++) {
-            	newSelectedItems.add(dataCommunicator.getItem(i));
-            }
+            Set<T> newSelectedItems = obtainNewSelectedItems(fromIndex, toIndex);
             asMultiSelect().select(newSelectedItems);
         }
     }
+
+	@SuppressWarnings("unchecked")
+	private Set<T> obtainNewSelectedItems(int fromIndex, int toIndex) {
+		DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
+		Set<T> newSelectedItems = new HashSet<>();
+		int from = Math.min(fromIndex, toIndex);
+		int to = Math.max(fromIndex, toIndex) + 1;
+		int pageSize = dataCommunicator.getPageSize();
+		if (to - from < (pageSize * 2) - 3) {
+			for(int i = from; i < to; i++) {
+				newSelectedItems.add(dataCommunicator.getItem(i));
+			}
+		} else {
+		    Method fetchFromProvider;
+		    try {
+		        fetchFromProvider = DataCommunicator.class.getDeclaredMethod("fetchFromProvider", int.class, int.class);
+		        fetchFromProvider.setAccessible(true);
+		        newSelectedItems.addAll(((Stream<T>) fetchFromProvider.invoke(dataCommunicator, from, to - from + 1)).collect(Collectors.toList()));
+		    } catch (Exception ignored) {
+		        ignored.printStackTrace();
+		    }
+		}
+		return newSelectedItems;
+	}
 
     /**
      * Select the range and deselect the other items
@@ -168,13 +186,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private void selectRangeOnly(int fromIndex, int toIndex) {
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
-            int from = Math.min(fromIndex, toIndex);
-            int to = Math.max(fromIndex, toIndex);
-            DataCommunicator<T> dataCommunicator = super.getDataCommunicator();
-            Set<T> newSelectedItems = new HashSet<>();
-            for(int i = from; i < (to +1); i++) {
-            	newSelectedItems.add(dataCommunicator.getItem(i));
-            }
+            Set<T> newSelectedItems = obtainNewSelectedItems(fromIndex, toIndex);
             HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
             oldSelectedItems.removeAll(newSelectedItems);
             asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
