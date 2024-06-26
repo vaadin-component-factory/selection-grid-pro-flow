@@ -160,10 +160,14 @@ public class SelectionGridPro<T> extends GridPro<T> {
 		int to = Math.max(fromIndex, toIndex) + 1;
 		int pageSize = dataCommunicator.getPageSize();
 		if (to - from < (pageSize * 2) - 3) {
+			// if the range to be retrieved is smaller than 2 pages
+			// ask the dataCommunicator to retrieve the items so the cache is used
 			for(int i = from; i < to; i++) {
 				newSelectedItems.add(dataCommunicator.getItem(i));
 			}
 		} else {
+			// if the range to be retrieved is bigger then use the fetchFromProvider method
+			// that load the items in pages reducing the amount of queries to the backend
 		    Method fetchFromProvider;
 		    try {
 		        fetchFromProvider = DataCommunicator.class.getDeclaredMethod("fetchFromProvider", int.class, int.class);
