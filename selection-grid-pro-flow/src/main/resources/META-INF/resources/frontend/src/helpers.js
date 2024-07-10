@@ -27,7 +27,7 @@ export function _selectionGridSelectRowWithItem(e, item, index) {
     // if click select only this row
     if (!ctrlKey && !e.shiftKey) {
         if (this.$server) {
-            this.$server.selectRangeOnly(index, index);
+            this.$server.selectRangeOnlyOnClick(index, index);
         } else {
             this.selectedItems = [];
             this.selectItem(item);
@@ -58,7 +58,7 @@ export function _selectionGridSelectRowWithItem(e, item, index) {
     } else {
         if (!ctrlKey) {
             if (this.$server) {
-                this.$server.selectRangeOnly(index, index);
+                this.$server.selectRangeOnlyOnClick(index, index);
             }
         } else {
             if (this.selectedItems && this.selectedItems.some((i) => i.key === item.key)) {
@@ -88,7 +88,7 @@ export function _selectionGridRightClickSelectRow(e) {
                 // keep all selected
                 return;
             } else {
-                this.$server.selectRangeOnly(index, index);
+                this.$server.selectRangeOnlyOnClick(index, index);
             }
         }
     }

@@ -1,13 +1,5 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /*
  * #%L
  * selection-grid-pro-flow
@@ -32,12 +24,22 @@ import com.vaadin.flow.component.grid.GridSelectionModel;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.data.provider.DataCommunicator;
 import com.vaadin.flow.data.selection.SelectionModel;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Tag("vaadin-selection-grid-pro")
 @CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid-pro")
 @JsModule("./src/vcf-selection-grid-pro.js")
 @JsModule("./src/selection-grid-pro.js")
 public class SelectionGridPro<T> extends GridPro<T> {
+  
+    private Integer selectRangeOnlyFromIndex = null;
+    private Set<T> selectRangeOnlySelection = new HashSet<T>();
 
     /**
      * @see Grid#Grid()
@@ -190,13 +192,49 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private void selectRangeOnly(int fromIndex, int toIndex) {
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
-            Set<T> newSelectedItems = obtainNewSelectedItems(fromIndex, toIndex);
+                      
+            Set<T> newSelectedItems = new HashSet<T>();
+          
+            int calculatedFromIndex = fromIndex;
+          
+            // selectRangeOnlySelection will keep the items already selected so there's no unnecessary
+            // call to backend done
+            if (!selectRangeOnlySelection.isEmpty()) {
+              int firstKey = selectRangeOnlyFromIndex;
+              int lastKey = selectRangeOnlySelection.size() - 1;
+
+              // recalculate from index so already selected items are not re-selected and no
+              // unnecessary call to backend is done
+              if (fromIndex == firstKey && toIndex > lastKey) {
+                calculatedFromIndex = lastKey + 1;
+                newSelectedItems.addAll(selectRangeOnlySelection);                
+              }
+            }
+            
+            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndex, toIndex));
             HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
             oldSelectedItems.removeAll(newSelectedItems);
             asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
+            
+            // update selectRangeOnlySelection with new selected items
+            selectRangeOnlySelection = new HashSet<T>(getSelectedItems());
+            selectRangeOnlyFromIndex = fromIndex;
         }
     }
-
+    
+    /**
+     * Select the range on click and makes sure selectRangeOnlySelection is cleared.
+     * 
+     * @param fromIndex
+     * @param toIndex
+     */
+    @ClientCallable
+    private void selectRangeOnlyOnClick(int fromIndex, int toIndex) {
+        selectRangeOnlySelection.clear();
+        selectRangeOnlyFromIndex = null;
+        this.selectRangeOnly(fromIndex, toIndex);
+    }
+       
     @Override
     protected void setSelectionModel(GridSelectionModel<T> model, SelectionMode selectionMode) {
         if (selectionMode == SelectionMode.MULTI) {
