@@ -22,12 +22,30 @@ export function _selectionGridSelectRow(e) {
     }    
 }
 
+export function _debounce(func, wait, immediate) {
+    var context = this,
+        args = arguments;
+    var later = function() {
+        window.debounceFunction = null;
+        if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !window.debounceFunction;
+    clearTimeout(window.debounceFunction);
+    window.debounceFunction = setTimeout(later, wait);
+    if (callNow) {
+		func.apply(context, args);
+	}
+};
+
 export function _selectionGridSelectRowWithItem(e, item, index) {
     const ctrlKey = (e.metaKey)?e.metaKey:e.ctrlKey; //(this._ios)?e.metaKey:e.ctrlKey;
     // if click select only this row
     if (!ctrlKey && !e.shiftKey) {
         if (this.$server) {
-            this.$server.selectRangeOnlyOnClick(index, index);
+			this._debounce(() => { 
+				this.$server.selectRangeOnlyOnClick(index, index);
+            }, 100);
+            
         } else {
             this.selectedItems = [];
             this.selectItem(item);
@@ -48,17 +66,23 @@ export function _selectionGridSelectRowWithItem(e, item, index) {
 
         if (!ctrlKey) {
             if (this.$server) {
-                this.$server.selectRangeOnly(this.rangeSelectRowFrom, index);
+				this._debounce(() => { 
+                	this.$server.selectRangeOnly(this.rangeSelectRowFrom, index);
+            	}, 100);
             }
         } else {
             if (this.$server) {
-                this.$server.selectRange(this.rangeSelectRowFrom, index);
+				this._debounce(() => { 
+                	this.$server.selectRange(this.rangeSelectRowFrom, index);
+                }, 100);
             }
         }
     } else {
         if (!ctrlKey) {
             if (this.$server) {
-                this.$server.selectRangeOnlyOnClick(index, index);
+			this._debounce(() => { 
+				this.$server.selectRangeOnlyOnClick(index, index);
+            }, 100);
             }
         } else {
             if (this.selectedItems && this.selectedItems.some((i) => i.key === item.key)) {
@@ -69,7 +93,9 @@ export function _selectionGridSelectRowWithItem(e, item, index) {
                 }
             } else {
                 if (this.$server) {
-                    this.$server.selectRange(index, index);
+					this._debounce(() => { 
+                    	this.$server.selectRange(index, index);
+                    }, 100);
                 }
             }
         }
@@ -88,7 +114,9 @@ export function _selectionGridRightClickSelectRow(e) {
                 // keep all selected
                 return;
             } else {
-                this.$server.selectRangeOnlyOnClick(index, index);
+				this._debounce(() => { 
+                	this.$server.selectRangeOnlyOnClick(index, index);
+                }, 100);
             }
         }
     }

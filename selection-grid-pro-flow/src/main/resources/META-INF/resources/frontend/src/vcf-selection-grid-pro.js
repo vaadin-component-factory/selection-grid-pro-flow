@@ -19,9 +19,10 @@ import {
     _getItemOverriden,
     _selectionGridSelectRow,
     _selectionGridSelectRowWithItem,
-    _selectionGridRightClickSelectRow
+    _selectionGridRightClickSelectRow,
+    _debounce
+    
 } from './helpers';
-
 class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
 
     constructor() {
@@ -30,6 +31,7 @@ class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
         this._selectionGridSelectRow = _selectionGridSelectRow.bind(this);
         this._selectionGridSelectRowWithItem = _selectionGridSelectRowWithItem.bind(this);
         this._selectionGridRightClickSelectRow = _selectionGridRightClickSelectRow.bind(this);
+        this._debounce = _debounce.bind(this);
     }
 
     static get properties() {
