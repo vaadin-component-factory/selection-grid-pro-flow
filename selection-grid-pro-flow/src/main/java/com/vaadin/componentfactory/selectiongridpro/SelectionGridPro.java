@@ -1,6 +1,5 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,7 +24,6 @@ import java.util.stream.Stream;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
@@ -195,30 +193,32 @@ public class SelectionGridPro<T> extends GridPro<T> {
      */
     @ClientCallable
     private void selectRangeOnly(int fromIndex, int toIndex) {
+		int start = fromIndex < toIndex ? fromIndex : toIndex;
+		int end = fromIndex < toIndex ? toIndex : fromIndex;
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
                       
             Set<T> newSelectedItems = new HashSet<T>();
           
-            int calculatedFromIndex = fromIndex;
+            int calculatedFromIndex = start;
           
             // selectRangeOnlySelection will keep the items already selected so there's no unnecessary
             // call to backend done
             if (!selectRangeOnlySelection.isEmpty()) {
               int firstKey = selectRangeOnlyFromIndex;
-              int lastKey = selectRangeOnlySelection.size() - 1;
+              int lastKey = firstKey + selectRangeOnlySelection.size() - 1;
 
               // recalculate from index so already selected items are not re-selected and no
               // unnecessary call to backend is done
-              if (fromIndex == firstKey && toIndex > lastKey) {
-                calculatedFromIndex = lastKey + firstKey;
+              if (start == firstKey && end > lastKey) {
+                calculatedFromIndex = lastKey;
                 newSelectedItems.addAll(selectRangeOnlySelection);                
               }
             }
             
             final int calculatedFromIndexFinal = calculatedFromIndex;
 			this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
-	            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndexFinal, toIndex));
+	            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndexFinal, end));
 	            HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
 	            oldSelectedItems.removeAll(newSelectedItems);
 	            asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
