@@ -1,5 +1,14 @@
 package com.vaadin.componentfactory.selectiongridpro;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /*
  * #%L
  * selection-grid-pro-flow
@@ -16,6 +25,7 @@ package com.vaadin.componentfactory.selectiongridpro;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.grid.Grid;
@@ -24,13 +34,6 @@ import com.vaadin.flow.component.grid.GridSelectionModel;
 import com.vaadin.flow.component.gridpro.GridPro;
 import com.vaadin.flow.data.provider.DataCommunicator;
 import com.vaadin.flow.data.selection.SelectionModel;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Tag("vaadin-selection-grid-pro")
 @CssImport(value = "./styles/grid.css", themeFor = "vaadin-selection-grid-pro")
@@ -149,8 +152,10 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private void selectRange(int fromIndex, int toIndex) {
         GridSelectionModel<T> model = getSelectionModel();
         if (model instanceof GridMultiSelectionModel) {
-            Set<T> newSelectedItems = obtainNewSelectedItems(fromIndex, toIndex);
-            asMultiSelect().select(newSelectedItems);
+			this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
+				Set<T> newSelectedItems = obtainNewSelectedItems(fromIndex, toIndex);
+				asMultiSelect().select(newSelectedItems);
+			}));
         }
     }
 
@@ -206,15 +211,18 @@ public class SelectionGridPro<T> extends GridPro<T> {
               // recalculate from index so already selected items are not re-selected and no
               // unnecessary call to backend is done
               if (fromIndex == firstKey && toIndex > lastKey) {
-                calculatedFromIndex = lastKey + 1;
+                calculatedFromIndex = lastKey + firstKey;
                 newSelectedItems.addAll(selectRangeOnlySelection);                
               }
             }
             
-            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndex, toIndex));
-            HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
-            oldSelectedItems.removeAll(newSelectedItems);
-            asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
+            final int calculatedFromIndexFinal = calculatedFromIndex;
+			this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
+	            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndexFinal, toIndex));
+	            HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
+	            oldSelectedItems.removeAll(newSelectedItems);
+	            asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
+			}));
             
             // update selectRangeOnlySelection with new selected items
             selectRangeOnlySelection = new HashSet<T>(getSelectedItems());
@@ -232,7 +240,9 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private void selectRangeOnlyOnClick(int fromIndex, int toIndex) {
         selectRangeOnlySelection.clear();
         selectRangeOnlyFromIndex = null;
-        this.selectRangeOnly(fromIndex, toIndex);
+		this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
+			this.selectRangeOnly(fromIndex, toIndex);
+		}));
     }
        
     @Override
