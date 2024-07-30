@@ -216,12 +216,12 @@ public class SelectionGridPro<T> extends GridPro<T> {
             }
             
             final int calculatedFromIndexFinal = calculatedFromIndex;
-			this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
-	            newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndexFinal, end));
-	            HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
-	            oldSelectedItems.removeAll(newSelectedItems);
-	            asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
-			}));
+            this.getUI().ifPresent(ui->ui.beforeClientResponse(this, (ctx)->{
+              newSelectedItems.addAll(obtainNewSelectedItems(calculatedFromIndexFinal, end));
+              HashSet<T> oldSelectedItems = new HashSet<>(getSelectedItems());
+              oldSelectedItems.removeAll(newSelectedItems);
+              asMultiSelect().updateSelection(newSelectedItems, oldSelectedItems);
+            }));
             
             // update selectRangeOnlySelection with new selected items
             selectRangeOnlySelection = new HashSet<T>(getSelectedItems());
