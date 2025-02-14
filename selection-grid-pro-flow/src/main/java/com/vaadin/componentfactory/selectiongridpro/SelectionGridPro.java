@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Tag;
@@ -40,6 +41,8 @@ public class SelectionGridPro<T> extends GridPro<T> {
   
     private Integer selectRangeOnlyFromIndex = null;
     private Set<T> selectRangeOnlySelection = new HashSet<T>();
+    private boolean multiSelectionColumnVisible = false;
+    private boolean persistentCheckboxSelection = true;
 
     /**
      * @see Grid#Grid()
@@ -73,7 +76,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
     protected void onAttach(AttachEvent attachEvent) {
         super.onAttach(attachEvent);
         if (this.getSelectionModel() instanceof SelectionModel.Multi) {
-            hideMultiSelectionColumn();
+        	setMultiSelectionColumnVisible(multiSelectionColumnVisible);
         }
     }
 
@@ -246,7 +249,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
        
     @Override
     protected void setSelectionModel(GridSelectionModel<T> model, SelectionMode selectionMode) {
-        if (selectionMode == SelectionMode.MULTI) {
+        if (selectionMode == SelectionMode.MULTI && !this.multiSelectionColumnVisible) {
             hideMultiSelectionColumn();
         }
         super.setSelectionModel(model, selectionMode);
@@ -257,11 +260,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
      * is not removed, but set to "hidden" explicitly.
      */
     protected void hideMultiSelectionColumn() {
-        getElement().getNode().runWhenAttached(ui ->
-                ui.beforeClientResponse(this, context ->
-                        getElement().executeJs(
-                                "if (this.querySelector('vaadin-grid-flow-selection-column')) {" +
-                                        " this.querySelector('vaadin-grid-flow-selection-column').hidden = true }")));
+       	this.setMultiSelectionColumnVisible(false);
     }
 
     /**
@@ -298,4 +297,48 @@ public class SelectionGridPro<T> extends GridPro<T> {
     	this.getElement().setProperty("rightClickEnabled", enabled);
     }
     
+	/**
+	 * Returns true if the multi selection column is visible, false otherwise.
+	 * @return
+	 */
+	public boolean isMultiSelectionColumnVisible() {
+		return multiSelectionColumnVisible;
+	}
+	
+	/**
+	 * Sets the visibility of the multi selection column.
+	 * 
+	 * @param multiSelectionColumnVisible - true to show the multi selection column, false to hide it
+	 */
+	public void setMultiSelectionColumnVisible(boolean multiSelectionColumnVisible) {
+		if (this.getSelectionModel() instanceof SelectionModel.Multi) {
+	        getElement().getNode().runWhenAttached(ui ->
+            ui.beforeClientResponse(this, context -> {
+            	getElement().executeJs(
+                        "if (this.querySelector('vaadin-grid-flow-selection-column')) {" +
+                                " this.querySelector('vaadin-grid-flow-selection-column').hidden = $0 }", !multiSelectionColumnVisible);
+            	this.recalculateColumnWidths();
+            }));
+		}
+		this.multiSelectionColumnVisible = multiSelectionColumnVisible;
+	}
+
+	/**
+	 * Returns true if the checkbox selection is persistent, false otherwise.
+	 * 
+	 * @return
+	 */
+	public boolean isPersistentCheckboxSelection() {
+		return persistentCheckboxSelection;
+	}
+
+	/**
+	 * Sets the checkbox selection to be persistent or not.
+	 * 
+	 * @param persistentCheckboxSelection - true to make the checkbox selection persistent, false otherwise
+	 */
+	public void setPersistentCheckboxSelection(boolean persistentCheckboxSelection) {
+		this.getElement().executeJs("this.classicCheckboxSelection = $0", !persistentCheckboxSelection);
+		this.persistentCheckboxSelection = persistentCheckboxSelection;
+	}
 }
