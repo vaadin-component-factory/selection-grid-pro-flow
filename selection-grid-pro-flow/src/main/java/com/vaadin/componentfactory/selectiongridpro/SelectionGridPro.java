@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.vaadin.flow.component.AttachEvent;
@@ -45,7 +44,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
     private boolean persistentCheckboxSelection = true;
 
     /**
-     * @see Grid#Grid()
+     * @see GridPro#GridPro()
      */
     public SelectionGridPro() {
         super();
@@ -124,7 +123,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
             fetchFromProvider.setAccessible(true);
             getDataProviderSize.setAccessible(true);
             int size = (Integer) getDataProviderSize.invoke(dataCommunicator);
-            return ((Stream<T>) fetchFromProvider.invoke(dataCommunicator, 0, size)).collect(Collectors.toList());
+            return ((Stream<T>) fetchFromProvider.invoke(dataCommunicator, 0, size)).toList();
         } catch (Exception ignored) {
         }
         return new ArrayList<>();
@@ -145,8 +144,8 @@ public class SelectionGridPro<T> extends GridPro<T> {
     /**
      * Select the range and keep the other items selected
      *
-     * @param fromIndex
-     * @param toIndex
+     * @param fromIndex the start index of the range to select
+     * @param toIndex the end index of the range to select
      */
     @ClientCallable
     private void selectRange(int fromIndex, int toIndex) {
@@ -179,7 +178,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
 		    try {
 		        fetchFromProvider = DataCommunicator.class.getDeclaredMethod("fetchFromProvider", int.class, int.class);
 		        fetchFromProvider.setAccessible(true);
-		        newSelectedItems.addAll(((Stream<T>) fetchFromProvider.invoke(dataCommunicator, from, to - from + 1)).collect(Collectors.toList()));
+		        newSelectedItems.addAll(((Stream<T>) fetchFromProvider.invoke(dataCommunicator, from, to - from + 1)).toList());
 		    } catch (Exception ignored) {
 		        ignored.printStackTrace();
 		    }
@@ -270,7 +269,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
      */
     public void addThemeVariants(SelectionGridVariant... variants) {
         getThemeNames().addAll(Stream.of(variants)
-                .map(SelectionGridVariant::getVariantName).collect(Collectors.toList()));
+                .map(SelectionGridVariant::getVariantName).toList());
     }
 
     /**
@@ -280,7 +279,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
      */
     public void removeThemeVariants(SelectionGridVariant... variants) {
         getThemeNames().removeAll(Stream.of(variants)
-                .map(SelectionGridVariant::getVariantName).collect(Collectors.toList()));
+                .map(SelectionGridVariant::getVariantName).toList());
     }
     
     /**
@@ -299,7 +298,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
     
 	/**
 	 * Returns true if the multi selection column is visible, false otherwise.
-	 * @return
+	 * @return true if the multi selection column is visible, false otherwise
 	 */
 	public boolean isMultiSelectionColumnVisible() {
 		return multiSelectionColumnVisible;
@@ -326,7 +325,7 @@ public class SelectionGridPro<T> extends GridPro<T> {
 	/**
 	 * Returns true if the checkbox selection is persistent, false otherwise.
 	 * 
-	 * @return
+	 * @return true if the checkbox selection is persistent, false otherwise
 	 */
 	public boolean isPersistentCheckboxSelection() {
 		return persistentCheckboxSelection;

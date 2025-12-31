@@ -155,6 +155,10 @@ class VcfSelectionGridPro extends ElementMixin(ThemableMixin(GridPro)) {
     static get version() {
         return '0.2.0';
     }
+
+    static get lumoInjector() {
+      return { ...super.lumoInjector, is: 'vaadin-grid-pro' }
+    }
 }
 
 customElements.define(VcfSelectionGridPro.is, VcfSelectionGridPro);

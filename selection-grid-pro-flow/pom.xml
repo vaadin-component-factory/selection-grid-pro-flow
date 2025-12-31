@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>selection-grid-pro-flow</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>jar</packaging>
 
     <name>Selection GridPro</name>
@@ -19,9 +19,9 @@
     </organization>
 
     <properties>
-        <vaadin.version>24.3.1</vaadin.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <vaadin.version>25.0.0</vaadin.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -47,11 +47,6 @@
             <id>Vaadin prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
         </repository>
-        <!-- Repository needed for the snapshot versions of Vaadin -->
-        <repository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -59,11 +54,6 @@
         <pluginRepository>
             <id>Vaadin prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-            <releases><enabled>false</enabled></releases>
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
@@ -102,22 +92,22 @@
                     </execution>
                 </executions>
             </plugin>
-<!--             <plugin> -->
-<!--                 <groupId>org.apache.maven.plugins</groupId> -->
-<!--                 <artifactId>maven-javadoc-plugin</artifactId> -->
-<!--                 <version>3.0.1</version> -->
-<!--                 <configuration> -->
-<!--                     <source>11</source> -->
-<!--                 </configuration> -->
-<!--                 <executions> -->
-<!--                     <execution> -->
-<!--                         <id>attach-javadoc</id> -->
-<!--                         <goals> -->
-<!--                             <goal>jar</goal> -->
-<!--                         </goals> -->
-<!--                     </execution> -->
-<!--                 </executions> -->
-<!--             </plugin> -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <source>21</source>
+                </configuration>
+                <executions>
+                     <execution>
+                         <id>attach-javadoc</id>
+                         <goals>
+                             <goal>jar</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -192,24 +182,24 @@
                             </execution>
                         </executions>
                     </plugin>
-<!--                     <plugin> -->
-<!--                         <groupId>org.apache.maven.plugins</groupId> -->
-<!--                         <artifactId>maven-javadoc-plugin</artifactId> -->
-<!--                         <version>3.0.1</version> -->
-<!--                         <executions> -->
-<!--                             <execution> -->
-<!--                                 <id>attach-javadocs</id> -->
-<!--                                 <phase>verify</phase> -->
-<!--                                 <goals> -->
-<!--                                     <goal>jar</goal> -->
-<!--                                 </goals> -->
-<!--                             </execution> -->
-<!--                         </executions> -->
-<!--                         <configuration> -->
-<!--                             <quiet>true</quiet> -->
-<!--                             <additionalparam>-Xdoclint:none</additionalparam> -->
-<!--                         </configuration> -->
-<!--                     </plugin> -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <quiet>true</quiet>
+                            <source>21</source>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>

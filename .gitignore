@@ -45,3 +45,4 @@ types.d.ts
 bundles
 
 selection-grid-flow/src/main/resources/rebel.xml
+selection-grid-pro-flow-demo/src/main/frontend/generated/

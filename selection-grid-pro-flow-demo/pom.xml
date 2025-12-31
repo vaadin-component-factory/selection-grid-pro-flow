@@ -6,7 +6,7 @@
 
     <groupId>org.vaadin.addons.componentfactory</groupId>
     <artifactId>selection-grid-pro-flow-demo</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>3.0.0</version>
 
     <name>Selection Grid Pro Demo</name>
     <packaging>war</packaging>
@@ -18,9 +18,9 @@
     </organization>
 
     <properties>
-        <vaadin.version>24.3.14</vaadin.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <vaadin.version>25.0.0</vaadin.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -48,11 +48,6 @@
             <id>Vaadin prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
         </repository>
-        <!-- Repository needed for the snapshot versions of Vaadin -->
-        <repository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -61,46 +56,17 @@
             <id>Vaadin prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
         </pluginRepository>
-        <pluginRepository>
-            <id>vaadin-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-            <releases><enabled>false</enabled></releases>
-        </pluginRepository>
     </pluginRepositories>
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin</artifactId>
-
-            <exclusions>
-                <!-- Webjars are only needed when running in Vaadin 13 compatibility mode -->
-                <!-- We have to exclude here as well, otherwise the commercial components which are Polymer 2/3 hybrids will bring in polymer 2 and webjars-->
-                <exclusion>
-                    <groupId>com.vaadin.webjar</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.insites</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.polymer</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.polymerelements</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.vaadin</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.webjars.bowergithub.webcomponents</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-dev</artifactId>
+            <optional>true</optional>
         </dependency>
 
        <dependency>
@@ -130,9 +96,9 @@
         <plugins>
             <!-- Jetty plugin for easy testing without a server -->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>11.0.15</version>
+                <groupId>org.eclipse.jetty.ee10</groupId>
+                <artifactId>jetty-ee10-maven-plugin</artifactId>
+                <version>12.0.15</version>
                 <configuration>
                     <scanIntervalSeconds>-1</scanIntervalSeconds>
                     <stopKey>${project.artifactId}</stopKey>
